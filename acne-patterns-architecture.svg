@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Personal Acne Pattern Finder — High-Level Design</title>
+  <desc id="desc">Architecture map showing daily capture, extraction and review, private personal timeline, pattern analysis, reports, and a separate dermatology evidence retrieval layer.</desc>
+  <defs>
+    <style>
+      text { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #202a35; }
+      .title { font-size: 34px; font-weight: 700; letter-spacing: -0.5px; }
+      .subtitle { font-size: 16px; fill: #637080; }
+      .section { font-size: 14px; font-weight: 700; letter-spacing: 1.4px; fill: #647180; }
+      .head { font-size: 18px; font-weight: 700; }
+      .body { font-size: 14px; fill: #4c5968; }
+      .small { font-size: 12px; fill: #687584; }
+      .tiny { font-size: 11px; fill: #687584; }
+      .card { fill: #fff; stroke: #d8e0e7; stroke-width: 1.5; }
+      .arrow { fill: none; stroke: #718096; stroke-width: 2.2; marker-end: url(#arrow); }
+      .dashed { fill: none; stroke: #8b76c7; stroke-width: 2; stroke-dasharray: 7 6; marker-end: url(#purpleArrow); }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#718096"/></marker>
+    <marker id="purpleArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8b76c7"/></marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#203040" flood-opacity=".08"/></filter>
+  </defs>
+  <rect width="1600" height="1000" fill="#f5f7fa"/>
+  <text x="64" y="70" class="title">Personal Acne Pattern Finder</text>
+  <text x="64" y="102" class="subtitle">High-level design • one person’s longitudinal data • pattern discovery, not diagnosis or treatment advice</text>
+
+  <text x="64" y="160" class="section">1  CAPTURE EACH DAY</text>
+  <text x="64" y="416" class="section">2  TURN INPUTS INTO A REVIEWABLE TIMELINE</text>
+  <text x="64" y="635" class="section">3  FIND AND EXPLAIN PERSONAL PATTERNS</text>
+
+  <!-- Daily capture cards -->
+  <g filter="url(#shadow)">
+    <rect x="64" y="182" width="345" height="190" rx="16" class="card"/>
+    <rect x="64" y="182" width="345" height="8" rx="4" fill="#e9a3a1"/>
+    <circle cx="96" cy="222" r="17" fill="#fff0ef"/><text x="96" y="228" text-anchor="middle" font-size="18">◉</text>
+    <text x="124" y="228" class="head">Face photos</text>
+    <text x="88" y="267" class="body">3 views each day</text>
+    <text x="103" y="293" class="body">• Straight-on</text><text x="103" y="317" class="body">• Left 45°  •  Right 45°</text>
+    <text x="88" y="350" class="small">Consistent time, light, distance &amp; angle</text>
+
+    <rect x="431" y="182" width="345" height="190" rx="16" class="card"/>
+    <rect x="431" y="182" width="345" height="8" rx="4" fill="#f0c476"/>
+    <circle cx="463" cy="222" r="17" fill="#fff5df"/><text x="463" y="228" text-anchor="middle" font-size="18">▧</text>
+    <text x="491" y="228" class="head">Food log</text>
+    <text x="455" y="267" class="body">Photo for each meal / snack</text>
+    <text x="455" y="295" class="body">Add a note when useful:</text>
+    <text x="470" y="320" class="small">ingredients • portion • drinks • time</text>
+    <text x="455" y="350" class="small">Photos are estimates; user can correct</text>
+
+    <rect x="798" y="182" width="345" height="190" rx="16" class="card"/>
+    <rect x="798" y="182" width="345" height="8" rx="4" fill="#87c8bc"/>
+    <circle cx="830" cy="222" r="17" fill="#e8f7f3"/><text x="830" y="228" text-anchor="middle" font-size="18">✳</text>
+    <text x="858" y="228" class="head">Skincare log</text>
+    <text x="822" y="267" class="body">Face wash + products used</text>
+    <text x="822" y="295" class="body">Product name and time</text>
+    <text x="822" y="323" class="body">Mark starts, stops, changes</text>
+    <text x="822" y="350" class="small">Include routine changes, not just products</text>
+
+    <rect x="1165" y="182" width="371" height="190" rx="16" class="card"/>
+    <rect x="1165" y="182" width="371" height="8" rx="4" fill="#8db1e7"/>
+    <circle cx="1197" cy="222" r="17" fill="#edf3ff"/><text x="1197" y="228" text-anchor="middle" font-size="18">☾</text>
+    <text x="1225" y="228" class="head">Sleep log</text>
+    <text x="1189" y="267" class="body">Bedtime + wake-up time</text>
+    <text x="1189" y="295" class="body">Derived: sleep duration</text>
+    <text x="1189" y="323" class="body">Optional: perceived sleep quality</text>
+    <text x="1189" y="350" class="small">Preserve dates across midnight</text>
+  </g>
+
+  <!-- arrows to ingestion -->
+  <path d="M236 372 V400 H800 V434" class="arrow"/><path d="M603 372 V434" class="arrow"/><path d="M970 372 V434" class="arrow"/><path d="M1350 372 V400 H800 V434" class="arrow"/>
+  <g filter="url(#shadow)">
+    <rect x="64" y="438" width="335" height="160" rx="16" class="card"/>
+    <text x="88" y="474" class="head">Private capture app</text>
+    <text x="88" y="505" class="body">Timestamps • reminders • missing-entry flags</text>
+    <text x="88" y="532" class="body">Local/private storage • export &amp; delete</text>
+    <text x="88" y="567" class="small">Raw photos stay linked to their date</text>
+
+    <rect x="443" y="438" width="370" height="160" rx="16" class="card"/>
+    <text x="467" y="474" class="head">Extraction + user review</text>
+    <text x="467" y="505" class="body">Face image → severity / lesion estimate</text>
+    <text x="467" y="532" class="body">Food image → food labels / meal estimate</text>
+    <text x="467" y="559" class="body">Product photo/text → product name</text>
+    <text x="467" y="585" class="small">Confirm or correct before analysis</text>
+
+    <rect x="857" y="438" width="679" height="160" rx="16" fill="#eef5fb" stroke="#b9d0e3" stroke-width="1.5"/>
+    <text x="881" y="474" class="head">Personal dated timeline</text>
+    <text x="881" y="505" class="body">Daily table: acne score + foods + products + sleep + context</text>
+    <text x="881" y="532" class="body">Keep structured values, timestamps, source images &amp; corrections</text>
+    <text x="881" y="559" class="body">One person’s data • versioned • private • user-controlled</text>
+    <text x="881" y="585" class="small">Analysis reads this timeline; it does not query a universal “trigger” vector</text>
+  </g>
+  <path d="M399 518 H438" class="arrow"/><path d="M813 518 H851" class="arrow"/>
+
+  <!-- analysis and knowledge -->
+  <g filter="url(#shadow)">
+    <rect x="64" y="663" width="405" height="199" rx="16" class="card"/>
+    <text x="88" y="700" class="head">Personal pattern analysis</text>
+    <text x="88" y="733" class="body">• Compare acne changes with recent exposures</text>
+    <text x="88" y="760" class="body">• Check possible delays / time windows</text>
+    <text x="88" y="787" class="body">• Account for missing data and routine changes</text>
+    <text x="88" y="814" class="body">• Compare early weeks with later weeks</text>
+    <text x="88" y="844" class="small">Start interpretable; avoid causal claims</text>
+
+    <rect x="510" y="663" width="315" height="199" rx="16" fill="#f3effb" stroke="#d5c9ef" stroke-width="1.5"/>
+    <text x="534" y="700" class="head">Evidence library + RAG</text>
+    <text x="534" y="733" class="body">Current, licensed dermatology sources</text>
+    <text x="534" y="760" class="body">Retrieve passages for explanations</text>
+    <text x="534" y="787" class="body">Return source links with context</text>
+    <text x="534" y="827" class="small">Explains evidence; does not find your trigger</text>
+
+    <rect x="866" y="663" width="315" height="199" rx="16" class="card"/>
+    <text x="890" y="700" class="head">Personal pattern report</text>
+    <text x="890" y="733" class="body">Possible recurring associations</text>
+    <text x="890" y="760" class="body">Time window • observations • uncertainty</text>
+    <text x="890" y="787" class="body">Trend plots + “not enough data” state</text>
+    <text x="890" y="827" class="small">You decide what is worth exploring</text>
+
+    <rect x="1222" y="663" width="314" height="199" rx="16" fill="#fff8e8" stroke="#e7d5a9" stroke-width="1.5"/>
+    <text x="1246" y="700" class="head">Feedback loop</text>
+    <text x="1246" y="733" class="body">Review → correct log → collect more</text>
+    <text x="1246" y="760" class="body">Re-check whether pattern repeats</text>
+    <text x="1246" y="787" class="body">Keep / dismiss candidate pattern</text>
+    <text x="1246" y="827" class="small">Personal learning over time</text>
+  </g>
+  <path d="M1196 598 V627 H266 V657" class="arrow"/>
+  <path d="M469 761 H504" class="arrow"/>
+  <path d="M469 807 H859" class="arrow"/>
+  <path d="M825 780 H859" class="dashed"/>
+  <path d="M1181 762 H1216" class="arrow"/>
+  <path d="M1378 663 V619 H1196 V598" class="arrow"/>
+
+  <!-- footer -->
+  <rect x="64" y="898" width="1472" height="58" rx="14" fill="#eaf0f5"/>
+  <text x="88" y="923" class="body" font-weight="700">Scope guardrail</text>
+  <text x="225" y="923" class="body">Personal pattern discovery only — no diagnosis, medicine suggestions, or claims that an association proves cause.</text>
+  <text x="88" y="944" class="tiny">Solid arrows: personal data flow  •  Dashed arrow: reference evidence supports explanation only  •  User reviews automated extractions</text>
+</svg>
