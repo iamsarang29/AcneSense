@@ -1,0 +1,21 @@
+# Personal records and private captures
+data/
+private-data/
+personal-data/
+uploads/
+captures/
+*.face.jpg
+*.face.jpeg
+*.meal.jpg
+*.meal.jpeg
+
+# Local secrets and environment files
+.env
+.env.*
+!.env.example
+credentials.json
+secrets.json
+
+# Common local system files
+.DS_Store
+Thumbs.db
